@@ -1,0 +1,63 @@
+@model List<Appointment>
+@{
+    ViewData["Title"] = "Личный кабинет врача";
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        Личный кабинет врача
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Doctor" asp-action="Index">Текущий приём</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" asp-controller="Doctor" asp-action="Appointments">Все приёмы</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        @if (Model.Count == 0)
+        {
+            <div class="row">
+                <div class="col">Приёмы не найдены</div>
+            </div>
+        }
+        else
+        {
+            <table class="table table-hover mt-2 text-start">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Дата и время</th>
+                        <th>Длительность (мин.)</th>
+                        <th>Пациент</th>
+                        <th>Рекомендации</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appointment in Model)
+                    {
+                        <tr>
+                            <td>@appointment.Id</td>
+                            <td>@appointment.StartAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@appointment.Duration</td>
+                            <td>
+                                @if (appointment.ClientId != 0)
+                                {
+                                    <a asp-controller="Doctor" asp-action="ClientRecord" asp-route-clientId="@appointment.ClientId">
+                                        #@appointment.ClientId
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Свободно</span>
+                                }
+                            </td>
+                            <td>@(string.IsNullOrEmpty(appointment.Recommendation) ? "—" : appointment.Recommendation)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

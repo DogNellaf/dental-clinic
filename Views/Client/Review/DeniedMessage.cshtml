@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Личный кабинет пациента: отзыв";
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        Личный кабинет пациента
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Client" asp-action="Index">Больничная карта</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" asp-controller="Client" asp-action="Review">Отзыв</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        Отзыв могут оставить только посетившие хотя бы один прием клиенты.
+    </div>
+</div>

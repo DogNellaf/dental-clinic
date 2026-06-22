@@ -1,0 +1,135 @@
+@model Appointment
+@{
+    ViewData["Title"] = "Личный кабинет врача";
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        Личный кабинет врача
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" asp-controller="Doctor" asp-action="Index">Текущий приём</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Doctor" asp-action="Appointments">Все приёмы</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        @if (Model == null)
+        {
+            <p class="text-muted mt-3">Сейчас нет активного приёма.</p>
+        }
+        else
+        {
+            <div class="row mt-3 g-3">
+                <div class="col-md-3">
+                    <div class="border rounded p-2">
+                        <small class="text-muted">Приём №</small><br>
+                        <strong>@Model.Id</strong>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border rounded p-2">
+                        <small class="text-muted">Начало</small><br>
+                        <strong>@Model.StartAt.ToString("HH:mm")</strong>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border rounded p-2">
+                        <small class="text-muted">Длительность (мин.)</small><br>
+                        <strong>@Model.Duration</strong>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border rounded p-2">
+                        <small class="text-muted">Пациент</small><br>
+                        <strong>@Model.ClientId</strong>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mt-3 g-2 justify-content-center">
+                <div class="col-auto">
+                    <a asp-controller="Doctor" asp-action="ClientRecord" asp-route-clientId="@Model.ClientId"
+                       class="btn btn-info">Больничная карта пациента</a>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mt-3 g-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header text-start">Продлить приём</div>
+                        <div class="card-body text-start">
+                            <form method="post"
+                                  asp-controller="Doctor"
+                                  asp-action="ExtendAppointment"
+                                  asp-route-appointmentId="@Model.Id">
+                                <div class="mb-2">
+                                    <label class="form-label">Дополнительных минут</label>
+                                    <input type="number" name="additionalMinutes" class="form-control" min="1" max="120" value="15" />
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Причина</label>
+                                    <input type="text" name="reason" class="form-control" placeholder="Причина продления" />
+                                </div>
+                                <button type="submit" class="btn btn-warning">Продлить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header text-start">Завершить досрочно</div>
+                        <div class="card-body text-start">
+                            <form method="post"
+                                  asp-controller="Doctor"
+                                  asp-action="EndAppointmentEarly"
+                                  asp-route-appointmentId="@Model.Id">
+                                <div class="mb-2">
+                                    <label class="form-label">Причина</label>
+                                    <input type="text" name="reason" class="form-control" placeholder="Причина досрочного завершения" />
+                                </div>
+                                <button type="submit" class="btn btn-danger">Завершить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header text-start">Рекомендации пациенту</div>
+                        <div class="card-body text-start">
+                            @if (!string.IsNullOrEmpty(Model.Recommendation))
+                            {
+                                <p class="mb-2"><em>Текущие рекомендации:</em> @Model.Recommendation</p>
+                            }
+                            <form method="post"
+                                  asp-controller="Doctor"
+                                  asp-action="AddRecommendation"
+                                  asp-route-appointmentId="@Model.Id">
+                                <div class="mb-2">
+                                    <textarea name="recommendation" class="form-control" rows="3"
+                                              placeholder="Введите рекомендации...">@Model.Recommendation</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить рекомендации</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}

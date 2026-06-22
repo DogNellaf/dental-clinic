@@ -1,0 +1,32 @@
+﻿@model DentalClinic.Models.DTO.LoginViewModel;
+
+<h2>Авторизация</h2>
+
+<form asp-controller="Auth" asp-action="Login" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-outline mb-4">
+        <input class="form-control"  asp-for="Email" />
+        <label class="form-label" asp-for="Email">Email</label>
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-outline mb-4">
+        <input class="form-control" asp-for="Password" />
+        <label class="form-label" asp-for="Password">Пароль</label>
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col d-flex justify-content-center">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RememberMe" checked />
+                <label class="form-check-label" asp-for="RememberMe">Запомнить меня</label>
+            </div>
+        </div>
+    </div>
+
+    <input class="btn btn-primary btn-block mb-4" type="submit" value="Войти" />
+
+    <div class="text-center">
+        <p>Еще не клиент? <a asp-controller="Auth" asp-action="Registration">Регистрация</a></p>
+    </div>
+</form>

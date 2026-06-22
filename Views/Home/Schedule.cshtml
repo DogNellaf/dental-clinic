@@ -1,0 +1,33 @@
+﻿@model List<Service>
+
+@{
+    ViewData["Title"] = "Запись на прием";
+}
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-controller="Home" asp-action="ScheduleWithService" method="GET">
+        <p>Выберите услугу:</p>
+        <select name="Service" class="form-select mt-4">
+            @foreach (var service in Model)
+            {
+                <option value="@service.Title">@service.Title</option>
+            }
+        </select>
+        <div class="form-group mt-4">
+            <input type="submit" value="Загрузить" class="btn btn-primary" />
+        </div>
+    </form>
+}
+else
+{
+    <p>Просмотр расписания доступен только авторизовным пользователям. </p>
+    <p>Не хотите регистрироваться? <a asp-controller="Home" asp-action="Contacts">Позвоните нам</a></p>
+}
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

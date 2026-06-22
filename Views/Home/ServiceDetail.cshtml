@@ -1,0 +1,15 @@
+﻿@model DentalClinic.Models.Service
+
+@{
+    ViewData["Title"] = "Информация об услуге";
+}
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <center>@Model.Price руб.</center>
+    <p>@Model.Description</p>
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Services">Вернуться в список услуг</a>
+</div>

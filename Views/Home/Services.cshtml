@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DentalClinic.Models.Service>
+
+@{
+    ViewData["Title"] = "Услуги";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Список услуг</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название услуги
+            </th>
+            <th>
+                Цена
+            </th>
+            <th>
+                Описание
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => service.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => service.Price) руб.
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => service.Description)
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="ServiceDetail" asp-route-serviceId="@service.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
